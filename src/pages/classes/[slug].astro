@@ -1,0 +1,1387 @@
+---
+// 1. Указываем все возможные классы и их данные
+export function getStaticPaths() {
+  const classes = [
+    // Воины
+    { id: 'zhnec', title: 'Жнец', type: 'Воин', back: '/multiclasses', desc: 'Жнецов обычно представляют как злых собирателей душ, однако на самом деле это не так.' },
+    { id: 'speedster', title: 'Спидстер', type: 'Воин', back: '/multiclasses', desc: 'Молниеносный боец, превосходящий врагов в скорости.' },
+    { id: 'assassin', title: 'Ассасин', type: 'Воин', back: '/multiclasses', desc: 'Ассасины не всегда являются тёмными путниками, но всё же умения говорят об обратном.' },
+    { id: 'knight', title: 'Рыцарь', type: 'Воин', back: '/multiclasses', desc: 'Закованный в тяжелую броню защитник веры и чести.' },
+    { id: 'oplot', title: 'Оплот', type: 'Воин', back: '/multiclasses', desc: 'Несокрушимая стена обороны отряда.' },
+    { id: 'jeger', title: 'Егерь', type: 'Воин', back: '/multiclasses', desc: 'Мастер выживания, дальнего боя и ловушек.' },
+    { id: 'paladin', title: 'Паладин', type: 'Воин', back: '/multiclasses', desc: 'Святой воитель, карающий врагов светом и мечом.' },
+
+    // Маги
+    { id: 'wizard', title: 'Волшебник', type: 'Маг', back: '/multiclasses', desc: 'Интеллектуальный заклинатель, изучающий тайные книги.' },
+    { id: 'druid', title: 'Друид', type: 'Маг', back: '/multiclasses', desc: 'Хранитель природы, меняющий форму и повелитель стихий.' },
+    { id: 'weaver', title: 'Ткач', type: 'Маг', back: '/multiclasses', desc: 'Мастер плетения магических нитей и пространственных аномалий.' },
+    { id: 'medium', title: 'Медиум', type: 'Маг', back: '/multiclasses', desc: 'Проводник между миром живых и духами.' },
+    { id: 'prisma', title: 'Призма', type: 'Маг', back: '/multiclasses', desc: 'Призма - укратитель магии, способный менять форму и вид стандартных заклинаний. Его мощь поражает, однако он не способен унаследовать чистое изменение.' },
+
+    // Эксперты
+    { id: 'alchemist', title: 'Алхимик', type: 'Эксперт', back: '/multiclasses', desc: 'Создатель взрывных зелий, ядов и эликсиров.' },
+    { id: 'engineer', title: 'Инженер', type: 'Эксперт', back: '/multiclasses', desc: 'Создатель механизмов, турелей и сложных устройств.' },
+    { id: 'bard', title: 'Бард', type: 'Эксперт', back: '/multiclasses', desc: 'Бард - настоящее воплощение живой музыки, амбиций и характера' },
+  ];
+
+  return classes.map(item => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+---
+
+<html lang="ru">
+	<head>
+		<meta charset="utf-8" />
+		<title>{item.title} — Twilight Sparkles</title>
+		<style>
+			.content-card {
+				background: #ece4d9; 
+				border: 1px solid #e2e8f0;
+				border-radius: 20px;
+				padding: 40px;
+				color: #000000 !important;
+				max-width: 1300px;
+				width: 100%;
+				box-sizing: border-box;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                position: relative; 
+                overflow: hidden;
+			}
+            .content-card h1,
+            .content-card h2,
+            .content-card h3,
+            .content-card h4,
+            .content-card p,
+            .content-card span,
+            .content-card div,
+            .content-card li {
+                color: #1e293b !important;
+            }
+            .content-card table {
+                color: #1e293b !important;
+            }
+            .content-card th {
+                color: #0f172a !important;
+            }
+			.ability-block { border-bottom: 1px solid rgba(0, 0, 0, 0.15); padding-bottom: 10px; margin-bottom: 18px; }
+            .ability-title { font-size: 20px; font-weight: 800; color: #1e293b; text-transform: uppercase; margin: 0 0 4px 0; }
+            .ability-subtitle { font-size: 13px; font-style: italic; color: #475569; margin: 0 0 8px 0; }
+            .ability-text { font-size: 15px; line-height: 1.5; color: #1e293b; margin-top: 0; margin-bottom: 8px; }
+            .ability-text ul {margin: 6px 0 10px 20px; padding: 0; }
+            .ability-text li { margin-bottom: 4px; color: #1e293b; }
+		</style>
+	</head>
+	<body style="font-family: sans-serif; margin: 0; min-height: 100vh; background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/bg.jpg'); background-repeat: no-repeat; background-position: center; background-size: cover; background-attachment: fixed; display: flex; flex-direction: column; align-items: center; padding: 60px 20px;">
+		
+		<a href={item.back} style="position: absolute; left: 40px; top: 40px; color: #ffffff; text-decoration: none; font-weight: 600;">← Назад к списку</a>
+
+		<div class="content-card">
+			<h1 style="font-size: 34px; margin-top: 0; margin-bottom: 10px;">{item.title}</h1>
+			<p style="font-size: 14px; color: #000000; font-style: italic; margin-bottom: 25px;">Тип: {item.type}</p>
+            
+            <!-- Базовое описание из массива -->
+            <div class="ability-block">
+				<h3 class="ability-title">Общая информация</h3>
+				<p class="ability-subtitle">Роль в отряде</p>
+				<p class="ability-text">{item.desc}</p>
+			</div>
+
+            {item.id === 'zhnec' && (
+                <div>
+                    <!-- 1. СНАЧАЛА ТАБЛИЦА -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; color: #e2e8f0; font-size: 15px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid rgba(230, 226, 226, 0.5);">
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Уровень</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Бонус Мастерства</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Умения</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">1</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Пожинание, Использование Добычи</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">2</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Жестокий приём</td>
+                            </tr>
+                             <tr style="border-bottom: 1px solid rgba(253, 253, 253, 0.1);">
+                                <td style="padding: 10px;">3</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Углублёная охота</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">4</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">5</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Дополнительная атака, Жестокий приём(1к8)</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">6</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Пожинание гигантов, Величественный трофей</td>
+                            </tr>
+                               <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">7</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Особенности Углублёной Охоты</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">8</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">9</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Разбор</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">10</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Разнообразная добыча</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">11</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Особенности Углублёной Охоты</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">12</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">13</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Жестокий удар(1к10)</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">14</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Последний трофей</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">15</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Особенности Углублёной Охоты, Жестокий приём(1к12)</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">16</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">17</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Великая жатва</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">18</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Совершенный жнец</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">19</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">20</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Кровожатва</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 2. ПОТОМ БЛОК СПОСОБНОСТИ -->
+                    <div class="ability-block">
+                        <h3 class="ability-title">Пожинание</h3>
+                        <p class="ability-subtitle">1-й уровень, умение жнеца</p>
+                        <p class="ability-text">Вы научились извлекать пользу из побеждённых врагов.</p>
+                        <p class="ability-text">Теперь за каждое убийство врага вы получаете Добычу. Максимум предела Добычи равняется мод. Мудрости + бонус мастерства. Добыча используется бонусным действием. Вы сами выбираете, собрать ли Добычу с существа или нет.</p>
+                        <p class="ability-text">Вы сами выбираете как выглядит ваша Добыча, однако она обязательно должна быть материальной. Вы так же можете передавать добычу своим сюзникам. Бонусным действием вы можете бросить Добычу союзнику, чтобы он её использовал. </p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Использование Добычи</h3>
+                        <p class="ability-subtitle">1-й уровень, умение жнеца</p>
+                        <p class="ability-text">Настоящие жнецы умеют отделять пользу разной Добычи. Добыча делится на несколько типов:</p>
+                        <ul class="ability-text">
+                        <li>Нежить</li>
+                        <li>Гуманоиды</li>
+                        <li>Звери</li>
+                        <li>Конструкты</li>
+                        <li>Монстры</li>
+                        <li>Небожители</li>
+                        <li>Элементали</li>
+                        <li>Растения</li>
+                        <li>Феи</li>
+                        </ul>
+                        <a href="#loot-effects" style="display: inline-block; margin-top: 4px; color: #2563eb; text-decoration: underline; font-size: 15px;">Подробнее см. ниже</a>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Жестокий удар</h3>
+                        <p class="ability-subtitle">2-й уровень, умение жнеца</p>
+                        <p class="ability-text">Удары по врагам проявляются с особой жестокостью. Попадая по врагу, вы наносите дополнительные 1к6 некротического урона при условии что хиты цели не равны максимуму.</p>
+                        <p class="ability-text">Урон увеличивается до 1к8 на 5-м уровне, 1к10 на 11-м и 1к12 на 15 уровне.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Боевой стиль</h3>
+                        <p class="ability-subtitle">2-й уровень, умение жнеца</p>
+                        <p class="ability-text">Вы выбираете боевой стиль, соответствующий вашей специализации. Выберите один из следующих вариантов. Вы не можете выбирать один и тот же вариант боевого стиля, даже если позже у вас будет возможность выбрать еще один стиль.</p>
+                        <p class="ability-text"><strong>Дуэлянт</strong></p>
+                        <p class="ability-text">Пока вы держите рукопашное оружие в одной руке и не используете другого оружия, вы получаете бонус +2 к броскам урона этим оружием.</p>
+                        <p class="ability-text"><strong>Оборона</strong></p>
+                        <p class="ability-text">Если существо, которое вы видите, атакует не вас, а другое существо, находящееся в пределах 5 футов от вас, вы можете реакцией создать помеху его броску атаки. Для этого вы должны использовать щит.</p>
+                        <p class="ability-text"><strong>Защита</strong></p>
+                        <p class="ability-text">Пока вы носите доспехи, вы получаете бонус +1 к КД.</p>
+                        <p class="ability-text"><strong>Сражение большим оружием</strong></p>
+                        <p class="ability-text">Если у вас выпало «1» или «2» на кости урона при атаке, которую вы совершали рукопашным оружием, удерживая его двумя руками, то вы можете перебросить эту кость, и должны использовать новый результат, даже если снова выпало «1» или «2». Чтобы воспользоваться этим преимуществом, ваше оружие должно иметь свойство «двуручное» или «универсальное».</p>
+                        <p class="ability-text"><strong>Сражение двумя оружиями</strong></p>
+                        <p class="ability-text">Если вы сражаетесь двумя оружиями, вы можете добавить модификатор характеристики к урону от второй атаки.</p>
+                        <p class="ability-text"><strong>Стрельба</strong></p>
+                        <p class="ability-text">Вы получаете бонус +2 к броску атаки, когда атакуете дальнобойным оружием.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Углублёная охота</h3>
+                        <p class="ability-subtitle">3-й уровень, умение жнеца</p>
+                        <p class="ability-text">Вы выбираете собственный стиль добычи. Добыча даст вам умения на 3-м, 7-м, 13-м и 15-м уровнях.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Увеличение характеристик</h3>
+                        <p class="ability-subtitle">4-й уровень, умение жнеца</p>
+                        <p class="ability-text">При достижении 4-го, потом 6-го, 8-го, 12-го, 14-го, 16-го и 19-го уровней вы можете повысить значение одной из ваших характеристик на 2 или двух характеристик на 1. Как обычно, значение характеристики при этом не должно превысить 20.</p>
+                        <p class="ability-text">Если ваш Мастер разрешает использование черт, вы можете отказаться от преимуществ этого умения при повышении значений характеристик и вместо этого взять черту.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Дополнительная атака</h3>
+                        <p class="ability-subtitle">5-й уровень, умение жнеца</p>
+                        <p class="ability-text">Если вы в свой ход совершаете действие Атака, вы можете совершить две атаки вместо одной.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Пожинание гигантов</h3>
+                        <p class="ability-subtitle">6-й уровень, умение жнеца</p>
+                        <p class="ability-text">Вы способны собирать добычу с крупных целей. Теперь, любая добыча, собранная с существ размера Большой или больше, будет давать 2 добычи вместо 1, игнорируя при этом максимальный запас</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Величественный трофей</h3>
+                        <p class="ability-subtitle">6-й уровень, умение жнеца</p>
+                        <p class="ability-text">Получение Добычи с более редких существ теперь не представляет труда. Теперь вы можете получать добычу с:</p>
+                        <ul class="ability-text">
+                        <li>Великаны</li>
+                        <li>Драконы</li>
+                        <li>Обьекты</li>
+                        <li>Абберации</li>
+                        <li>Исчадия</li>
+                        </ul>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Разбор</h3>
+                        <p class="ability-subtitle">9-й уровень, умения жнеца</p>
+                        <p class="ability-text">Ваше умение собирать Добычу возрасло в разы. Теперь, когда вы побеждаете существо, помимо добычи вы так же можете получить его Душу. Эффект Души зависит от природы существа, например:</p>
+                        <ul class="ability-text">
+                        <li>Вы победили Взрослого Красного Дракона. Его душа даёт вам сопротивление к огню до конца продолжительного отдыха</li>
+                        <p class="ability-text">Или:</p>
+                        <li>Вы победили тёмного Лича. Его душа даёт вам 30 временных хитов и усиление атак для типа некротического урона</li>
+                        </ul>
+                    </div>
+                     <div class="ability-block">
+                        <h3 class="ability-title">Разнообразная добыча</h3>
+                        <p class="ability-subtitle">10-й уровень, умение жнеца</p>
+                        <p class="ability-text">Обычная Добыча - больше не ваш уровень. Вы способны комбинировать Добычу и получать от этого сразу несколько бонусов.</p>
+                        <a href="#loot-effects" style="display: inline-block; margin-top: 4px; color: #2563eb; text-decoration: underline; font-size: 15px;">Подробнее см. ниже</a>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Последний трофей</h3>
+                        <p class="ability-subtitle">14-й уровень, умение жнеца</p>
+                        <p class="ability-text">Сбор добычи ещё не закончен. Когда вы опускаетесь до 0 хитов, вы можете потратить 3 Добычи чтобы остаться на 1 хите. После этого, вы сможете сразу переместиться на половину своей скорости либо совершить рукопашную атаку. Вы можете использовать это умение снова после продолжительного отдыха.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Великая жатва</h3>
+                        <p class="ability-subtitle">17-й уровень, умение жнеца</p>
+                        <p class="ability-text">Ваш голод добычи никогда не угасает. Теперь, любое убийство что будет давать Добычу когда хранилище заполнено, Добычу можно конвертировать в ресурс, данный подклассом. Максимальное количество конвертаций равняется 5.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Совершенный жнец</h3>
+                        <p class="ability-subtitle">18-й уровень, умение жнеца</p>
+                        <p class="ability-text">Эффекты от Добычи кажутся вам слишком ничтожными. При использовании Добычи его эффект удваивается, однако это не распространяется на эффект Добычи от подкласса.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Кроножатва</h3>
+                        <p class="ability-subtitle">20-й уровень, умение жнеца</p>
+                        <p class="ability-text">Получая максимальную мощь, вы наполняетесь силой. Вы спопособны войти в состояние Кроножатвы на 1 минуту. Преимущества, данные вам:</p>
+                        <ul class="ability-text">
+                        <li><strong>Ограничений на добычу нет:</strong> любое количество собранной вами Добычи не учитывается в максимальном запасе, и остаётся пока вы их не потратите.</li>
+                        <li><strong>Мульти-использование:</strong> вместо использования 1 Добычи вы можете использовать сразу 3.</li>
+                        <li><strong>Серия убийств:</strong> За каждую использованную Добычу вы получаете +2 к урону и броску атаки. Серия сбрасывается после успешной атаки.</li>
+                        </ul>
+                        <p class="ability-text">Вы можете использовать это умение снова после продолжительного отдыха.</p>
+                    </div>
+
+
+        
+            <details id="loot-effects" style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin: 15px 0; overflow: hidden;">
+    <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+        Эффекты добычи
+    </summary>
+    <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.02);">
+        <p class="ability-text">Добыча - главное оружие жнецов. Добыча делится на несколько типов, в зависимости от вида убитого врага:</p>
+        <ul class="ability-text">
+            <li><strong>Нежить:</strong> Добыча нежити даёт восстановление 5 хитов</li>
+            <li><strong>Гуманоиды:</strong> Добыча гуманоидов даёт +2 на попадание на следующую атаку</li>
+            <li><strong>Зверь:</strong> Добыча зверя даёт дополнительные 10 футов скорости до конца хода</li>
+            <li><strong>Конструкты:</strong> Добыча конструктов даёт 10 временных хитов (не накладывается друг на друга)</li>
+            <li><strong>Монстры:</strong> Добыча монстров даёт доп. урон равный бонусу мастерства</li>
+            <li><strong>Элементали:</strong> В зависимости от Элементаля даёт соответствующее сопротивление к урону на минуту</li>
+            <li><strong>Растения:</strong> Излучает тусклый свет в радиусе 20 футов</li>
+            <li><strong>Феи:</strong> Даёт полёт на 20 футов на 1 ход</li>
+            </ul>
+        <p class="ability-text">Добыча небожителей делится на:</p>
+            <ul class="ability-text">
+            <li><strong>Аасимары:</strong> Добыча аасимара востанавливает или даёт доп. ячейку 1 уровня заклинаний, восстанавливает 10 хитов и даёт сопротивление некротическому урону и урону от излучения.</li>
+            <li><strong>???:</strong> Добыча ??? восстанавливает ячейку первого уровня (если есть), даёт доп ячейку 1 или 2 уровня, восстанавливает 15 хитов и 15 временных, даёт сопротивление к некротическому урону и излучению, а так же дополнительный урон излучением равный модификатору базовой характеристики на минуту.</li>
+            <li><strong>???:</strong> ???</li>
+            </ul>
+        <h3 class="ability-title">6-й уровень</h3>
+        <ul class="ability-text">
+            <li><strong>Великаны:</strong> Добыча великанов даёт +1 к силе и телосложению при максимуме 20 и +2 к КД до конца любого отдыха(не накладываются друг на друга).</li>
+            <li><strong>Обьекты:</strong> Обьект даёт вам +3 к любому навыку на ваш выбор до конца любого отдыха.</li>
+            <li><strong>Абберации:</strong> Выберите один любой эффект Добычи аберрации: +10 футов скорости(1 минута), +10 временных хитов, +20 футов скорости плавания и лазания(1 минута), +1 к 2 любым навыкам на ваш выбор(до конца любого отдыха), +10 к урону на попадание при штрафе -5 а так же дополнительная ячейка первого уровня.</li>
+            <li><strong>Исчадия:</strong> ???</li>
+            </ul>
+            <p class="ability-text">Добыча драконов делится на:</p>
+            <ul class="ability-text">
+            <li><strong>Малый дракон:</strong> Добыча Малого Дракона восстанавливает вам 20 хитов, увеличивает КД и Мудрость на 1 при максимуме в 20 до конца любого отдыха, даёт скорость полёта и лазания 20 футов на минуту(учитывается со скоростью ходьбы) а так же даёт +3 к броску атаки и урону на минуту</li>
+            <li><strong>Взрослый дракон:</strong> Взрослый Дракон гарантирует восстановление 30 хитов и 15 временных хитов, увеличивает КД на 2, Силу и Мудрость на 1 при максимуме в 20 до конца любого отдыха, даёт скорость полёта/лазания 20 футов на минуту без учёта скорости ходьбы а так же даёт +3 к броску атаки, урону на минуту и +2 на спасброски Телосложения и Мудрости до конца любого отдыха</li>
+            <li><strong>Древний дракон:</strong> Взрослый Дракон гарантирует восстановление 50 хитов и 25 временных хитов, увеличивает КД на 4, Силу, Мудрость, Ловкость на 2 при максимуме в 20 до конца любого отдыха, даёт скорость полёта/лазания 30 футов на минуту без учёта скорости ходьбы а так же даёт +4 к броску атаки, урону на минуту и +2 на спасброски Телосложения, Мудрости, Силы и Интелекта до конца любого отдыха</li>
+            </ul>
+           </div>
+        </details>
+                    
+            <div style="margin-top: 40px; padding-top: 20px;">
+    <h2 style="font-size: 22px; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 5px;">
+        Охота
+    </h2>
+    <p style="font-size: 14px; color: #475569; margin-bottom: 20px;">
+        Разные жнецы используют разные способы Добычи... Выберите свою охоту.
+    </p>
+    </div>
+
+    <!-- Первая кнопка-архетип (в закрытом виде) -->
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Сангвин
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Сангвины - жнецы, что способны наводить хаос порядку. Эти высасыватели жизни так и ждут пока враг ошибётся, чтобы нанести критическую атаку. Ваши умения:</p>
+            <div style="margin-top: 25px;" class="ability-block">
+            <h3 class="ability-title">Кровавое пожинание</h3>
+            <p class="ability-subtitle">1-й уровень, умение Сангвина</p>
+            <p class="ability-text">За каждое использование любой Добычи, вы восстанавливаете 2 хита.</p>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Кража жизни</h3>
+            <p class="ability-subtitle">2-й уровень, умение Сангвина</p>
+            <p class="ability-text">Вы способны забрать здоровье у атакуемого вами существа. Попадая по существу атакой, бонусным действием вы восстанавливаете себе количество здоровья, равное половине наносимого урона. Вы можете использовать это умение 3 раза, а после чего следует завершить продолжительный отдых для использования этого умения снова.</p>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Жертва</h3>
+            <p class="ability-subtitle">3-й уровень, умение Сангвина</p>
+            <p class="ability-text">Теперь оружие, что вы несёте, владеет такими же свойствами что и вы. бонусным действием вы тратите собственную кровь, отнимая до 10 хитов, чтобы прибавить количество урона равное пожертвованному здоровью.</p>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Вечная жатва</h3>
+            <p class="ability-subtitle">5-й уровень, умение Сангвина</p>
+            <p class="ability-text">Каждую атаку после первой что вы совершаете, вы восстанавливаете 1 хит</p>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Чувство крови</h3>
+            <p class="ability-subtitle">7-й уровень, умение Сангвина</p>
+            <p class="ability-text">Жажда охотника больше не может утолить сама себя. Действием вы активируете эту способность, которая дарует вам умение чувствовать всех живых существ в радиусе 60 футов (очевидно, не работает на нежить и констурктов)</p>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Душа Похоти</h3>
+            <p class="ability-subtitle">9-й уровень, умение Сангвина</p>
+            <p class="ability-text">Души что вы собираете имеют свойство Похоти. При использовании Души вы можете активировать способность Похоти, которая раскрывает из вас фиолетовую сферу 30х30 футов. Все, кто попадает под её воздействие, получают 6к6 психического урона</p>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Манипуляция кровью</h3>
+            <p class="ability-subtitle">11-й уровень, умение Сангвина</p>
+            <p class="ability-text">Ваша власть над кровавой похотью увеличевается. Во первых, состояние "Кровотечение" не способно опустить вас ниже 1 хита. Во вторых, вы можете использовать следующие способности:</p>
+            <ul class="ability-text">
+            <li><strong>Кровавый луч:</strong> Действием вы тратите 5 собственных хитов чтобы выстрелить лучом 5х90 футов, нанося 2к10 магического режущего урона при попадании. Луч способен задеть только 1 цель и поворачивать его нельзя</li>
+            <li><strong>Кровавая баня:</strong> Действием вы тратите 10 собственных хитов и создаёте вокруг себя круг 30 футов по площади, который наполняется кровью и существо что туда вступит должно пройти спас. Ловкости иначе получит 4к10 урона при провале и половину этого урона округлённую в большую сторону при успехе</li>
+            <li><strong>Кровавая лужа:</strong> Действием вы тратите 10 собственных хитов чтобы из вас вылилась кровавая лужа. В пределах 60 футов вы выбираете к какому существу эта лужа отправится, и, вливаясь в тело нового владельца, существо восстанавливает 10 хитов</li>
+            <li><strong>Кровавые ножи:</strong> Действием вы тратите 15 собственных хитов, призывая 5 ножей состоящих из крови. Каждый нож наносит 3к4 магического рубящего урона. При успешной атаке все ножи летят в одно существо, но ножи можно разделить на несколько целей, бросив за каждый разделённый от начальной цели нож ещё одну атаку.</li>
+            </ul>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Бессмертный</h3>
+            <p class="ability-subtitle">14-й уровень, умение Сангвина</p>
+            <p class="ability-text">При использовании умения "Последний трофей" вместо 1 хита вы получаете 5.</p>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Кровавое накопление</h3>
+            <p class="ability-subtitle">15-й уровень, умение Сангвина</p>
+            <p class="ability-text">При восстановлении хитов от Добычи и достижении максимального запаса хитов, оставшиеся хиты конвертируются во временные, при этом накапливаясь. Вы так же получаете +1 к Телосложению при максимуме в 20.</p>
+            </div>
+            <div class="ability-block">
+            <h3 class="ability-title">Ресурс жатвы</h3>
+            <p class="ability-subtitle">17-й уровень, умение Сангвина</p>
+            <p class="ability-text">От умения "Великая жатва" Вы получаете ресурс - кровавые шарики. Они всегда разной формы, поэтому лечение от них - 4к4 хитов.</p>
+            </div>
+        </div>
+    </details>
+
+    <!-- Вторая кнопка-архетип -->
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Алчный
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Алчные жнецы не знают слова "хватит". Их стремление собирать и коллекционировать заставляет думать о них что они одержимые, хотя по большой части так и есть. Алчность даёт вам следующие умения:</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Предвестник
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Жнецы предвестники - ужасные существа, что порабащают Добычу своими чудовищными некротическими силами. Смерть в базовом понимании и есть Жнец-предвестник. Предвестник даёт вам следующие умения:</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Адаптивный
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Адаптивные жнецы умеют подстариваться под темп боя, меняя Добычу на ходу. Таких жнецов не редко называют умелыми, что соответсвует их роли. Адаптация даёт вам следующие умения:</p>
+            </div>
+        </details>
+    </div>
+            )}
+
+            {item.id === 'speedster' && (
+                <div>
+
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; color: #e2e8f0; font-size: 15px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid rgba(230, 226, 226, 0.5);">
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Уровень</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Бонус Мастерства</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Умения</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">1</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Комбо, Стремительность</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">2</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Инерция</td>
+                            </tr>
+                             <tr style="border-bottom: 1px solid rgba(253, 253, 253, 0.1);">
+                                <td style="padding: 10px;">3</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Стиль боя</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">4</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">5</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Последовательность</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">6</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Сквозное движение</td>
+                            </tr>
+                               <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">7</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Развитие стиля боя</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">8</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">9</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Комбо-мастерство</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">10</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Реакция скорости</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">11</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Развитие стиля боя</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">12</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">13</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Быстрая последовательность</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">14</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Каскад</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">15</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Развитие стиля боя</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">16</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">17</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Последовательность</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">18</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Вне восприятия</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">19</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">20</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Абсолютная скорость</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                    <div class="ability-block">
+<h3 class="ability-title">Комбо</h3>
+<p class="ability-subtitle">1-й уровень, умение спидстера</p>
+<p class="ability-text">Спидстер превращает последовательность успешных действий в непрерывное Комбо. Когда вы успешно совершаете действие, которое непосредственно продолжает предыдущее действие, вы получаете одно звено Комбо.</p>
+<p class="ability-text">Обычное перемещение само по себе не создаёт звено Комбо. Оно может использоваться для связывания действий между собой.</p>
+<p class="ability-text">Например: атака → перемещение → атака создаёт 2 звена Комбо. Атака → толчок → атака создаёт 3 звена, если каждое действие непосредственно связано с предыдущим.</p>
+<ul class="ability-text">
+<li>Одно звено: начало Комбо.</li>
+<li>Два звена: Спидстер получает 5 футов дополнительного перемещения.</li>
+<li>Три звена: Следующая атака Спидстера совершается с преимуществом.</li>
+<li>Четыре звена: Спидстер может немедленно переместиться на половину своей скорости.</li>
+<li>Пять и более звеньев: Каждое новое звено позволяет выбрать 5 футов перемещения, +1 к следующей атаке или +1 к КД до начала следующего хода.</li>
+</ul>
+<p class="ability-text">Комбо прекращается, если Спидстер не продолжает его до конца следующего хода или совершает действие, не связанное с текущей последовательностью. Спидстер становится ошеломлённым до начала следующего хода если Комбо было прервано противником.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Импульс</h3>
+<p class="ability-subtitle">1-й уровень, умение спидстера</p>
+<p class="ability-text">Чем дольше Спидстер находится в движении, тем сложнее его остановить. Пока у вас есть хотя бы 2 звена Комбо, вы получаете следующие преимущества:</p>
+<ul class="ability-text">
+<li>Вы не провоцируете атаки по возможности после перемещения не более чем на половину своей скорости.</li>
+<li>Вы можете вставать с земли, не тратя дополнительное перемещение.</li>
+<li>Труднопроходимая местность уменьшает вашу скорость только наполовину, если вы перемещаетесь по ней в рамках Комбо.</li>
+</ul>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Сохранение импульса</h3>
+<p class="ability-subtitle">2-й уровень, умение спидстера</p>
+<p class="ability-text">Получение урона больше не прерывает ваше Комбо автоматически. Если вы получили урон во время Комбо, вы можете продолжить его как обычно, если до конца следующего хода совершите успешное действие, продолжающее последовательность.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Боевой стиль</h3>
+<p class="ability-subtitle">2-й уровень, умение спидстера</p>
+<p class="ability-text">Вы выбираете боевой стиль, соответствующий вашей специализации. Выберите один из следующих вариантов. Вы не можете выбирать один и тот же вариант боевого стиля, даже если позже у вас будет возможность выбрать еще один стиль.</p>
+<p class="ability-text"><strong>Дуэлянт</strong></p>
+<p class="ability-text">Пока вы держите рукопашное оружие в одной руке и не используете другого оружия, вы получаете бонус +2 к броскам урона этим оружием.</p>
+<p class="ability-text"><strong>Оборона</strong></p>
+<p class="ability-text">Если существо, которое вы видите, атакует не вас, а другое существо, находящееся в пределах 5 футов от вас, вы можете реакцией создать помеху его броску атаки. Для этого вы должны использовать щит.</p>
+<p class="ability-text"><strong>Защита</strong></p>
+<p class="ability-text">Пока вы носите доспехи, вы получаете бонус +1 к КД.</p>
+<p class="ability-text"><strong>Сражение большим оружием</strong></p>
+<p class="ability-text">Если у вас выпало «1» или «2» на кости урона при атаке, которую вы совершали рукопашным оружием, удерживая его двумя руками, то вы можете перебросить эту кость, и должны использовать новый результат, даже если снова выпало «1» или «2». Чтобы воспользоваться этим преимуществом, ваше оружие должно иметь свойство «двуручное» или «универсальное».</p>
+<p class="ability-text"><strong>Сражение двумя оружиями</strong></p>
+<p class="ability-text">Если вы сражаетесь двумя оружиями, вы можете добавить модификатор характеристики к урону от второй атаки.</p>
+<p class="ability-text"><strong>Стрельба</strong></p>
+<p class="ability-text">Вы получаете бонус +2 к броску атаки, когда атакуете дальнобойным оружием.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Стиль боя</h3>
+<p class="ability-subtitle">3-й уровень, умение спидстера</p>
+<p class="ability-text">Ваше комбо приобретает собственный вид. Комбо обеспечит вам способности на 3-м, 7-м, 11-м и 15-м уровнях</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Увеличение характеристик</h3>
+<p class="ability-subtitle">4-й уровень, умение спидстера</p>
+<p class="ability-text">При достижении 4-го, потом 6-го, 8-го, 12-го, 14-го, 16-го и 19-го уровней вы можете повысить значение одной из ваших характеристик на 2 или двух характеристик на 1. Как обычно, значение характеристики при этом не должно превысить 20.</p>
+<p class="ability-text">Если ваш Мастер разрешает использование черт, вы можете отказаться от преимуществ этого умения при повышении значений характеристик и вместо этого взять черту.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Быстрая последовательность</h3>
+<p class="ability-subtitle">5-й уровень, умение спидстера</p>
+<p class="ability-text">Если вы в свой ход совершаете действие Атака, вы можете совершить две атаки вместо одной. Вы атакуете трижды на 13-м и четырежды на 17-м уровнях</p>
+<p class="ability-text">Если обе атаки успешны и между ними изменяется цель, позиция или способ атаки, каждая из них может продолжить ваше Комбо.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Сквозное движение</h3>
+<p class="ability-subtitle">6-й уровень, умение спидстера</p>
+<p class="ability-text">Вы можете проходить через пространство враждебного существа, если оно не более чем на один размер больше вас.</p>
+<p class="ability-text">Если вы проходите через пространство существа и успешно совершаете против него атаку в рамках Комбо, вы не провоцируете от этого существа атаку по возможности за это перемещение.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Двойной старт</h3>
+<p class="ability-subtitle">9-й уровень, умение спидстера</p>
+<p class="ability-text">Быстрый разгон позволяет быстро войти в бой</p>
+<p class="ability-text">Начиная своё комбо вы получаете сразу 2 звена комбо, вместо 1.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Реакция скорости</h3>
+<p class="ability-subtitle">10-й уровень, умение спидстера</p>
+<p class="ability-text">Вы получаете дополнительную реакцию каждый раунд.</p>
+<p class="ability-text">Эту реакцию можно использовать только для действия, непосредственно связанного с вашим Комбо: перемещения, уклонения, контратаки, использования способности или взаимодействия с окружением.</p>
+<p class="ability-text">Использование этой реакции не прекращает ваше Комбо.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Сверхскорость</h3>
+<p class="ability-subtitle">13-й уровень, умение спидстера</p>
+<p class="ability-text">Ваша скорость увеличивается на 10 футов.</p>
+<p class="ability-text">Вы можете совершать часть своего перемещения между отдельными действиями одного Комбо. Например, вы можете атаковать, переместиться на 15 футов, атаковать другую цель, переместиться ещё на 20 футов и продолжить последовательность.</p>
+<p class="ability-text">Если ваше Комбо содержит 5 или более звеньев, бонус к скорости от этого умения увеличивается до 20 футов.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Каскад</h3>
+<p class="ability-subtitle">14-й уровень, умение спидстера</p>
+<p class="ability-text">Когда ваше Комбо достигает 7 звеньев, вы можете немедленно совершить одно дополнительное действие, являющееся частью текущей последовательности</p>
+<p class="ability-text">Каскад не прекращает Комбо и может быть использован только один раз за ход.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Абсолютный разгон</h3>
+<p class="ability-subtitle">17-й уровень, умение спидстера</p>
+<p class="ability-text">Ваше Комбо может достигать любого количества звеньев. За каждые 5 звеньев Комбо вы получаете дополнительные преимущества:</p>
+<ul class="ability-text">
+<li>+5 футов к скорости</li>
+<li>+1 к КД</li>
+<li>+1 к броскам атак</li>
+</ul>
+<p class="ability-text">Эти бонусы складываются. Например, при 10 звеньях вы получаете +10 футов скорости, +2 к КД и +2 к броскам атак.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Моментум</h3>
+<p class="ability-subtitle">18-й уровень, умение спидстера</p>
+<p class="ability-text">Если ваше Комбо содержит 10 или более звеньев, вы можете использовать дополнительную реакцию, чтобы совершить одно действие из текущей последовательности в ход другого существа.</p>
+<p class="ability-text">Это действие должно непосредственно продолжать ваше Комбо.</p>
+</div>
+
+<div class="ability-block">
+<h3 class="ability-title">Неуловимый</h3>
+<p class="ability-subtitle">20-й уровень, умение спидстера</p>
+<p class="ability-text">При условии, что ваше комбо имеет минимум 10 звеньев, вы способны телепортироваться до 30 футов дополнительного перемщения.</p>
+                </div>
+
+        <div style="margin-top: 40px; padding-top: 20px;">
+    <h2 style="font-size: 22px; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 5px;">
+        Стиль боя
+    </h2>
+    <p style="font-size: 14px; color: #475569; margin-bottom: 20px;">
+        Каждый спидстер вариативен, и имеет разный сорт атак... Выберите свою серию:
+    </p>
+    </div>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Фантом
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Курьер
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Комбо-мастер
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Циклон
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+    
+            )}
+
+            {item.id === 'assassin' && ( 
+            <div>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; color: #e2e8f0; font-size: 15px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid rgba(230, 226, 226, 0.5);">
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Уровень</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Бонус Мастерства</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Умения</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">1</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Точные движения, Скрытая атака</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">2</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Подготовленное действие</td>
+                            </tr>
+                             <tr style="border-bottom: 1px solid rgba(253, 253, 253, 0.1);">
+                                <td style="padding: 10px;">3</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Специализация</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">4</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">5</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Дополнительная атака</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">6</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Мгновенная реакция</td>
+                            </tr>
+                               <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">7</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Расширение специализации</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">8</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">9</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Точная атака</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">10</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Мастерское движение</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">11</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Расширение специализации</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">12</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Улучшение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">13</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Дополнительная атака</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">14</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Исчезновение</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">15</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Расширение специализации</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">16</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">17</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Дополнительная атака</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">18</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Идеальная атака</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">19</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">20</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Мгновенное перемещение</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ability-block">
+                        <h3 class="ability-title">Точные движения</h3>
+                        <p class="ability-subtitle">1-й уровень, умение ассасина</p>
+                        <p class="ability-text">Мастерство, что ассасины стараются отточить то идеала открылись вам. Вы получаете следующие преимущества:</p>
+                        <ul class="ability-text">
+                        <li>+2 к попаданию рукопашной/дальнобойней атакой</li>
+                        <li>+10 футов скорости</li>
+                        <li>+1 на спасброски Ловкости</li>
+                        <li>+1 к двум любым навыкам на ваш выбор</li>
+                        </ul>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Скрытая атака</h3>
+                        <p class="ability-subtitle">1-й уровень, умение ассасина</p>
+                        <p class="ability-text">Если вы успешно используете навык "Скрытность" и имеете преимущество, либо рядом с существом стоит ещё одно дееспособное суещство, то следующая ваша атака наносит дополнительно 1к8 урона.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Подготовленное действие</h3>
+                        <p class="ability-subtitle">2-й уровень, умение ассасина</p>
+                        <p class="ability-text">Подготовка к бою безусловно важна для ассасинов. Ваши подготовленные действия делятся на 3 типа:</p>
+                        <ul class="ability-text">
+                        <li>Подготовленно: Совершённое действие исполняется и вы получаете возможность мгновенно переместится на 10 футов.</li>
+                        <li>Спланированно: Совершённое действие включает в себя возможности отклонения от стандартного плана и вы получаете предыдущую возможность, а так же вы получаете возможность скрыться реакцией, если вы можете скрыться хотя бы на две четверти. Сложность проверки Ловкости равняется 15.</li>
+                        <li>Предусмотренно: Совершённое действие запускает последовательность нужных вашему плану действий и вы получаете предыдущие возможности а так же возможность совершить ещё одно бонусное действие.</li>
+                        </ul>
+                        <p class="ability-text"><strong>10 уровень:</strong></p>
+                        <ul class="ability-text">
+                        <li>Подготовленно: Помимо предыдущих бонусов, реакцией вы способны мгновенно провести 1 атаку по существу в досягаемой дистанции.</li>
+                        <li>Спланированно: Помимо предыдущих бонусов, "Подготовленное действие" теперь тратит только действие, без реакции.</li>
+                        <li>Предусмотренно: Помимо предыдущих бонусов, вы получаете +2 к следующей проверке Скрытности и броску атаки.</li>
+                        </ul>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Боевой стиль</h3>
+                        <p class="ability-subtitle">2-й уровень, умение ассасина</p>
+                        <p class="ability-text">Вы выбираете боевой стиль, соответствующий вашей специализации. Выберите один из следующих вариантов. Вы не можете выбирать один и тот же вариант боевого стиля, даже если позже у вас будет возможность выбрать еще один стиль.</p>
+                        <p class="ability-text"><strong>Дуэлянт</strong></p>
+                        <p class="ability-text">Пока вы держите рукопашное оружие в одной руке и не используете другого оружия, вы получаете бонус +2 к броскам урона этим оружием.</p>
+                        <p class="ability-text"><strong>Оборона</strong></p>
+                        <p class="ability-text">Если существо, которое вы видите, атакует не вас, а другое существо, находящееся в пределах 5 футов от вас, вы можете реакцией создать помеху его броску атаки. Для этого вы должны использовать щит.</p>
+                        <p class="ability-text"><strong>Защита</strong></p>
+                        <p class="ability-text">Пока вы носите доспехи, вы получаете бонус +1 к КД.</p>
+                        <p class="ability-text"><strong>Сражение большим оружием</strong></p>
+                        <p class="ability-text">Если у вас выпало «1» или «2» на кости урона при атаке, которую вы совершали рукопашным оружием, удерживая его двумя руками, то вы можете перебросить эту кость, и должны использовать новый результат, даже если снова выпало «1» или «2». Чтобы воспользоваться этим преимуществом, ваше оружие должно иметь свойство «двуручное» или «универсальное».</p>
+                        <p class="ability-text"><strong>Сражение двумя оружиями</strong></p>
+                        <p class="ability-text">Если вы сражаетесь двумя оружиями, вы можете добавить модификатор характеристики к урону от второй атаки.</p>
+                        <p class="ability-text"><strong>Стрельба</strong></p>
+                        <p class="ability-text">Вы получаете бонус +2 к броску атаки, когда атакуете дальнобойным оружием.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Специализация</h3>
+                        <p class="ability-subtitle">3-й уровень, умение ассасина</p>
+                        <p class="ability-text">Вы выбираете собственную специализацию. Специализация предоставит вам умения на 3, 7, 11 и 15 уровнях</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Увеличение характеристик</h3>
+                        <p class="ability-subtitle">4-й уровень, умение ассасина</p>
+                        <p class="ability-text">При достижении 4-го, потом 6-го, 8-го, 12-го, 14-го, 16-го и 19-го уровней вы можете повысить значение одной из ваших характеристик на 2 или двух характеристик на 1. Как обычно, значение характеристики при этом не должно превысить 20.</p>
+                        <p class="ability-text">Если ваш Мастер разрешает использование черт, вы можете отказаться от преимуществ этого умения при повышении значений характеристик и вместо этого взять черту.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Дополнительная атака</h3>
+                        <p class="ability-subtitle">5-й уровень, умение ассасина</p>
+                        <p class="ability-text">Если вы в свой ход совершаете действие Атака, вы можете совершить две атаки вместо одной.</p>
+                        <p class="ability-text">Количество атак увеличивается до трёх на 13-м уровне этого класса, и до четырёх на 17-м уровне.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Мгновенная реакция</h3>
+                        <p class="ability-subtitle">6-й уровень, умение ассасина</p>
+                        <p class="ability-text">Вы начали реагировать намного быстрее чем раньше. Во первых, вы получаете вторую реакцию. Во вторых, использую реакцию, вы можете постараться отпрыгнуть на 5 футов от дальнобойной атаки в любом направлении. Сложность уворота противопоставима Сложности броска атаки.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Точная атака</h3>
+                        <p class="ability-subtitle">9-й уровень, умение ассасина</p>
+                        <p class="ability-text">Вы отточили умение скрытой атаки. Урон от навыка "Скрытая атака" увеличен до 3к8, а так же вы способны использовать атаку-по-возможности в момент когда существо подошло к вам, а не только когда отходит</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Мастерское движение</h3>
+                        <p class="ability-subtitle">10-й уровень, умение ассасина</p>
+                        <p class="ability-text">Ваши точные движения достигли высокого мастерства. Вы получаете:</p>
+                        <ul class="ability-text">
+                        <li>+1 дополнительно к попаданию рукопашной/дальнобойней атакой</li>
+                        <li>+10 дополнительных футов скорости</li>
+                        <li>+1 к КД</li>
+                        <li>+2 к навыку "Скрытность"</li>
+                        </ul>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Исчезновение</h3>
+                        <p class="ability-subtitle">14-й уровень, умение ассасина</p>
+                        <p class="ability-text">Слово "Ассасин" начинает вызывать ассоциации. Бонусным действием вы способны моментально переместиться на 20 футов в любом направлении, а после чего вы можете использовать эту способность снова после короткого или длинного отдыха</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Идеальная атака</h3>
+                        <p class="ability-subtitle">18-й уровень, умение ассасина</p>
+                        <p class="ability-text">Вы максимально сильно специализировали умение скрытой атаки. Урон от навыка "Скрытая атака" увеличен до 5к8, а так же сохраняя предыдущие преимущества вы, этой атакой, способны мгновенно убить существо ниже 3 уровня опасности</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Мгновенное перемещение</h3>
+                        <p class="ability-subtitle">20-й уровень, умение ассасина</p>
+                        <p class="ability-text">Вашей скорости нет предела. Дистанция навыка "Исчезновение" увеличено до 40 футов, а количество использований увеличено до 3. Паралельно с тем, вы получаете второе действие за ход, которое нельзя тратить на подготовленную атаку.</p>
+                    </div>
+                </div>
+
+            <div style="margin-top: 40px; padding-top: 20px;">
+    <h2 style="font-size: 22px; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 5px;">
+        Специализация
+    </h2>
+    <p style="font-size: 14px; color: #475569; margin-bottom: 20px;">
+       Наследие призмарина включает в себя свойства индивидуальности. Выберите своё предназначение:
+    </p>
+    </div>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Свет
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Инфильтратор
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Константа
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Падший
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Терра
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            ??? 
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">???</p>
+            </div>
+        </details>
+
+    
+             )}
+
+             {item.id === 'prisma' && ( 
+
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; color: #e2e8f0; font-size: 15px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid rgba(230, 226, 226, 0.5);">
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Уровень</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Бонус Мастерства</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Умения</th>
+                                <th style="text-align: left; padding: 10px; color: #ffffff;">Единицы призмы</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">1</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Призмарин</td>
+                                <td style="padding: 10px;">---</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">2</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Контроль над магией</td>
+                                <td style="padding: 10px;">---</td>
+                            </tr>
+                             <tr style="border-bottom: 1px solid rgba(253, 253, 253, 0.1);">
+                                <td style="padding: 10px;">3</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Поглощение</td>
+                                <td style="padding: 10px;">3</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">4</td>
+                                <td style="padding: 10px;">+2</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                                <td style="padding: 10px;">4</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">5</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">---</td>
+                                <td style="padding: 10px;">5</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <td style="padding: 10px;">6</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Призмаринов дар</td>
+                                <td style="padding: 10px;">6</td>
+                            </tr>
+                               <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">7</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">---</td>
+                                <td style="padding: 10px;">7</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">8</td>
+                                <td style="padding: 10px;">+3</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                                <td style="padding: 10px;">8</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">9</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">---</td>
+                                <td style="padding: 10px;">9</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">10</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Расширенный контроль над магией</td>
+                                <td style="padding: 10px;">10</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">11</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">---</td>
+                                <td style="padding: 10px;">11</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">12</td>
+                                <td style="padding: 10px;">+4</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                                <td style="padding: 10px;">12</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">13</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">---</td>
+                                <td style="padding: 10px;">13</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">14</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Призмаринов дар</td>
+                                <td style="padding: 10px;">14</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">15</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">---</td>
+                                <td style="padding: 10px;">15</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">16</td>
+                                <td style="padding: 10px;">+5</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                                <td style="padding: 10px;">16</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">17</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">---</td>
+                                <td style="padding: 10px;">17</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">18</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Призмаринов дар</td>
+                                <td style="padding: 10px;">18</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">19</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Увеличение характеристик</td>
+                                <td style="padding: 10px;">19</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 254, 254, 0.1);">
+                                <td style="padding: 10px;">20</td>
+                                <td style="padding: 10px;">+6</td>
+                                <td style="padding: 10px;">Дроблёный каст</td>
+                                <td style="padding: 10px;">20</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="ability-block">
+                        <h3 class="ability-title">Призмарин</h3>
+                        <p class="ability-subtitle">1-й уровень, умение призмы</p>
+                        <p class="ability-text">Призма - сила, способная давать улучшения пользователю. Выберите своё <a href="#giveaways" style="display: inline-block; margin-top: 4px; color: #2563eb; text-decoration: underline; font-size: 15px;">улучшение</a>. Призма обеспечит вам способности на 1, 6, 14 и 18 уровнях</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Контроль над магией</h3>
+                        <p class="ability-subtitle">2-й уровень, умение </p>
+                        <p class="ability-text">Главная способность призмы - изменение свойств магии. Бонусным действие вы можете:</p>
+                        <ul class="ability-text">
+                        <li>Увеличить площадь заклинания до 10 футов при штрафе в 1 кость кубов за каждые 5 футов расширения (Заклинания, имеющие лишь 1 кость кубов или не имеющие вообще способны расширится лишь до 5 футов без штрафов)</li>
+                        <li>Удлинить дистанцию заклинания до 30 футов при штрафе в 1 кость кубов за каждые 10 футов удлинения (Заклинания, имеющие лишь 1 кость кубов или не имеющие вообще способны удлинится лишь до 10 футов без штрафов)</li>
+                        <li>Изменить цвет заклинания (не требует бонусного действия, однако любое изменённое заклинание не может изменить цвет)</li>
+                        <li>Добавить кость кубов при штрафе в 15 футов удлинения/расширения за каждую кость кубов. Максимум можно добавить 3 кости кубов)</li>
+                        </ul>
+                        <p class="ability-text"><strong>10 уровень</strong></p>
+                        <ul class="ability-text">
+                        <li>Теперь площадь можно расширить до 20 футов при штрафе в 1 кость кубов за каждые 10 футов расширения</li>
+                        <li>Заклинание можно удлинить до 60 футов при штрафе в 1 кость кубов за каждые 30 футов расширения</li>
+                        <li>Заклинание теперь может изменить не только цвет, но и тип кости кубов при штрафе в 2 кости кубов/30 футов заклинания</li>
+                        <li>Кость кубов можно добавить до 5 раз при том же штрафе</li>
+                        <li>Заклинания, что способны лечить/наносить урон, теперь можно реверсировать. Наносимый урон будет некротическим. Штраф за реверсирование - 1 кость кубов/20 футов заклинания (Заклинания, имеющие лишь 1 кость кубов можно реверсировать лишь за дистанцию)</li>
+                        </ul>
+                        <p class="ability-text"><strong>17 уровень</strong></p>
+                        <ul class="ability-text">
+                        <li>Теперь площадь можно расширить до 30 футов без штрафа</li>
+                        <li>Заклинание можно удлинить до 90 футов при штрафе в 1 кость кубов за каждые 45 футов расширения</li>
+                        <li>Заклинание может изменить цвет и тип кости кубов при штрафе в 1 кости кубов/15 футов заклинания</li>
+                        <li>Кость кубов можно добавить до 5 раз при штрафе в 10 футов удлинения/расширения</li>
+                        </ul>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Поглощение</h3>
+                        <p class="ability-subtitle">3-й уровень, умение призмы</p>
+                        <p class="ability-text">Теперь заклинания приносят не только магическую, но и физическую помощь. Вам доступны 3 единицы призмы которые на последующих уровнях будут увеличивиться</p>
+                        <p class="ability-text"><strong>Единицы призмы.</strong> Особые магические частицы, способные напрямую влиять на владельца и окружающую среду. Они способны наносить урон, восстанавливать здоровье и ячейки и т.п. полный список умений раскрыт <a href="#prismabil" style="display: inline-block; margin-top: 4px; color: #2563eb; text-decoration: underline; font-size: 15px;">ниже</a>.</p>
+                    </div>
+                    <div class="ability-block">
+                        <h3 class="ability-title">Дроблёный каст</h3>
+                        <p class="ability-subtitle">20-й уровень, умение призмы</p>
+                        <p class="ability-text">Заклинания до 5 уровня ячейки, что требуют действия, теперь можно кастовать бонусным действием</p>
+                    </div>
+
+                    <details id="prismabil" style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin: 15px 0; overflow: hidden;">
+    <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+        Единицы призмы
+    </summary>
+    <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.02);">
+        <p class="ability-text">Магия призмы рассчитана на созидание. Бонусным действием:</p>
+        <p class="ability-text"><strong>1. Восстановление</strong> - Вы можете потратить единицы призмы чтобы вылечить себя или своих союзников:</p>
+        <ul class="ability-text">
+        <li>(1) Временное восстановление: лечит 5 хитов и даёт 5 дополнительных (доп. хиты не складываются)</li>
+        <li>(2) Малое восстановление: восстанавливает 10 хитов либо состояние глухоты, отравления, паралича или слепоты </li>
+        <li>(3) Восстановление: восстанавливает 15 хитов, даёт 5 временных хитов хитов либо предыдущие состояния, добавляя к этим состояниям ошеломление, кровотечение и агонию</li>
+        <li>(5) Высшее восстановление: восстанавливает 20 хитов, даёт 10 временных хитов либо убирает все возможные состояния</li>
+        </ul>
+        <p class="ability-text"><strong>2. Конвертация ячеек</strong> - Вы можете потратить единицы призмы чтобы восстановить ячейки заклинаний:</p>
+        <ul class="ability-text">
+        <li>2 единицы призмы восстанавливают 1-ую ячейку</li>
+        <li>3 единицы призмы восстанавливают 2-ую ячейку </li>
+        <li>5 единиц призмы восстанавливают 3-ую ячейку </li>
+        <li>6 единиц призмы восстанавливают 4-ую ячейку </li>
+        <li>7 единиц призмы восстанавливают 5-ую ячейку </li>
+        <li>Не владея ячейками высших уровней эти ячейки нельзя получить.</li>
+        <li><strong>Обратная конвертация:</strong> В зависимости от уровня ячейки при обратной конвертации вы получаете столько же единиц призмы.</li>
+        </ul>
+        <p class="ability-text"><strong>3. Нанесение ран</strong> - Вы можете потратить единицы призмы чтобы нанести урон силовым полем:</p>
+        <ul class="ability-text">
+        <li>1 единица - 1к6 урона силовым полем</li>
+        <li>2 единицы - 1к10 урона силовым полем</li>
+        <li>3 единицы - 2к6 урона силовым полем</li>
+        <li>5 единиц - 3к8 урона силовым полем</li>
+        <li>7 единиц - 4к10 урона силовым полем</li>
+        <li>8 единиц - 5к10 урона силовым полем</li>
+        </ul>
+        <p class="ability-text">Силовое поле выглядит как голубая сфера 5х5 футов и дальность её каста составляет 30 футов (нельзя расширить контролем над магией)</p>
+    </div>
+    </details>
+
+    <div style="margin-top: 40px; padding-top: 20px;">
+    <h2 style="font-size: 22px; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 5px;">
+        Призмаринов дар
+    </h2>
+    <p style="font-size: 14px; color: #475569; margin-bottom: 20px;">
+       Наследие призмарина включает в себя свойства индивидуальности. Выберите своё предназначение:
+    </p>
+    </div>
+
+    <details id="giveaways" style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Элементалист
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+        <p class="ability-text">Элементалисты-призмы это существа что берут силу от природы планеты. Они владеют такими стихиями, как: Огонь, Лёд, Молния, Свет и Тьма. Умения от каждого элемента индивидуальны, однако существуют маги что способны соединять элементы.</p>
+        <div style="margin-top: 25px;" class="ability-block">
+            <h3 class="ability-title">Базовый элемент</h3>
+            <p class="ability-subtitle">1-й уровень, умение Элементалиста</p>
+            <p class="ability-text">Определение вашего элемента гарантирует вам его же способности. Умения элемента:</p>
+            <ul class="ability-text">
+            <li>Огонь: бонусным действием вы создаёте небольшое пламя 1х1 фут в своей руке, которое озаряет темноту на 10 футов яркого и 10 футов тусклого света, способное поджигать возгарающиеся предметы. Действием вы способны выстрелить этим планемем во врага, нанося 1к8 урона огнём при попадании. Пламя пропадает после совершенного вами действия</li>
+            <li>Лёд: бонусным действием вы создаёте лёд вокруг себя по области 15х15 футов. Эта область становится труднопроходимой местностью, а так же рукопашные атаки и проверки/спасброски ловкости в этой области бросаются с помехой. Область требует концентрации и длится минуту</li>
+            <li>Молния: реакцией вы способны выстрелить электрическим током в существо, гарантируя ему помеху на броске атаки или помеху на спасброске Ловкости.</li>
+            <li>Свет: бонусным действием вы призываете луч света в дистанции максимум 30 футов, что лечит 2к4 хитов</li>
+            <li>Тьма: реакцией вы покрываете себя тьмой, что даёт вам +3 КД до начала вашего следующего хода</li>
+            </ul>
+            <p class="ability-text">Эти умения вы способны использовать дважды, а после чего можете использовать их снова после продолжительного отдыха. Все умения работают как заговоры, и при увеличении уровня их свойство будет увеличиваться</p>
+        </div>
+        <div class="ability-block">
+            <h3 class="ability-title">Контроль над элементами</h3>
+            <p class="ability-subtitle">2-й уровень, умение Элементалиста</p>
+            <p class="ability-text">Если умением "Контроль над магией" вы меняете свойство заклинания, то вы можете выбрать следующие изменения:</p>
+            <ul class="ability-text">
+            <li>Огонь: Изменение дистанции оставляет за собой огненный след, войдя в который наносится 1к4 урона огнём. Изменение площади становится огнеопасной и любое существо что войдёт или начнёт свой ход в этой области обязано пройти спас. Ловкости против вашего спасброска заклинаний иначе получит 1к6 урона огнём, а любой предмет что имеет свойство "возгораемый" зажжётся (совместимо с заклинаниями на поджог, например, заклинание "Паутина"), а изменение количества кубов даёт 1к4 урона огнём</li>
+            <li>Лёд: Изменение дистанции даёт +10 футов передвижения до конца хода, изменение площади считается труднопроходимым а область получает эффекты как от умения "Базовый элемент", изменение количества кубов даёт доп. 1к4 урона холодом при попадании</li>
+            <li>Молния: Изменение дистанции даёт доп реакцию что можно тратить лишь на атаку по возможности. Изменение площади теперь связывает цепь молнии от дистанции до вас, цепь молнии площадью всего 5х5 футов и все существа, попадающие под цепь молнии обязаны совершить Спас. Ловкости против вашего спасброска от заклинаний иначе получат 1к6 урона электричеством и будут ошеломлены. Изменение количества кубов даёт доп. 1к4 урона электричеством</li>
+            <li>Свет: Изменение дистанции восстанавливает вам 2 хита. Изменение площади заставляет заклинание светится в радиусе 10 футов ярким и ещё 10 футов тусклым светом, нанося дополнительные 1к6 урона излучением. Изменение количества кубов даёт доп. 1к4 урона излучением.</li>
+            <li>Тьма: Изменение дистанции даёт +1 к попадании на следующую атаку. Изменение площади создаёт туман что делает местнось сильно-заслонённой. Изменение количества кубов даёт доп. 1к4 урона некротической энергией.</li>
+            </ul>
+        </div>
+        <div class="ability-block">
+            <h3 class="ability-title">Единицы элементаля</h3>
+            <p class="ability-subtitle">3-й уровень, умение Элементалиста</p>
+            <p class="ability-text">При трате единиц призмы на "Нанесение ран" вы можете заменить урон силовым полем на соотвествующий вашему элементу урон:</p>
+            <ul class="ability-text">
+            <li>Огонь: Урон становится огненным и существо должно пройти спас. Ловкости иначе получает эффект поджога на минуту, или пока не потушится</li>
+            <li>Лёд: Урон становится ледяным и существо должно пройти спас. Ловкости иначе замедляется, теряя при этом 10 футов скорости на минуту</li>
+            <li>Молния: Урон становится электрическим и существо должно пройти спас. Телосложения иначе получает ошеломление до конца</li>
+            <li>Свет: Урон становится излучением и существо должно пройти спас. Телосложения иначе его КД снизится на 2 на минуту</li>
+            <li>Тьма: Урон становится некротическим и существо должно пройти спас. Ловкости иначе получает эффект опустошения</li>
+            </ul>
+        </div>
+        <div class="ability-block">
+            <h3 class="ability-title">Дополнительное перемещение</h3>
+            <p class="ability-subtitle">6-й уровень, умение Элементалиста</p>
+            <p class="ability-text">Осваивая собственную технику, вы находите способность перевоплощения:</p>
+            <ul class="ability-text">
+            <li>Огонь: Вы становитесь небольшим огоньком, размером 1х1 фут, и получаете скорость полёта, равную вашей скорости ходьбы, однако как только вы закончите ход или пройдёте максимальную доступную скорость вы перевоплотитесь обратно</li>
+            <li>Лёд: Вы становитесь небольшим снежным ветром, размером 1х1 фут, и получаете скорость полёта, равную вашей скорости ходьбы, однако как только вы закончите ход или пройдёте максимальную доступную скорость вы перевоплотитесь обратно</li>
+            <li>Молния: Вы становитесь небольшим зарядом, размером 1х1 фут, и получаете скорость полёта, равную вашей скорости ходьбы, однако как только вы закончите ход или пройдёте максимальную доступную скорость вы перевоплотитесь обратно</li>
+            <li>Свет: Вы становитесь небольшим клочком света, размером 1х1 фут, и получаете скорость полёта, равную вашей скорости ходьбы, однако как только вы закончите ход или пройдёте максимальную доступную скорость вы перевоплотитесь обратно</li>
+            <li>Тьма: Вы становитесь небольшой сферой тумана, размером 1х1 фут, и получаете скорость полёта, равную вашей скорости ходьбы, однако как только вы закончите ход или пройдёте максимальную доступную скорость вы перевоплотитесь обратно</li>
+            </ul>
+            <p class="ability-text">Перевоплощение использует свободное действие, а так же каждое перевоплощение излучает 5 футовый тусклый свет. Вы способны перевоплощаться 5 раз в продолжительный отдых.</p>
+        </div>
+        <div class="ability-block">
+            <h3 class="ability-title">Испокон веков</h3>
+            <p class="ability-subtitle">9-й уровень, умение Элементалиста</p>
+            <p class="ability-text">Наследие духов пробуждается, предоставляя следующие навыки:</p>
+            <ul class="ability-text">
+            <li>Огонь: Действием вы призываете гигантскую пламенную птицу 20х20 футов что появляется у вас в руке, и по вашему направлению преодолевает дистанцию в 60 футов, нанося всем существам в области 8к6 урона огнём и поджигая все предметы которые никто не неёсёт и не носит.</li>
+            <li>Лёд: Действием вы призываете гигантского червя, состоящего из льда, из самых недр земли. По вашему направлению червь движется в область дистанцией до 60 футов и разбивается там, нанося всем существам по области 20х20 футов 8к6 урона холодом.</li>
+            <li>Молния: Действием вы призываете огромного дракона, состоящего из молний что прилетает из ближайшего облака. Дракон движется в область, нанося 8к6 урона электричеством в точке, указанной вами</li>
+            <li>Свет: Действием вы призываете в радиусе 60 футов огромный подсолнух что прорастает прямо из земли. Подсолнух опускает каплю что полностью лечит того кто под ним стоит, а после чего уходит обратно в землю</li>
+            <li>Тьма: </li>
+            </ul>
+            <p class="ability-text">Перевоплощение использует свободное действие, а так же каждое перевоплощение излучает 5 футовый тусклый свет. Вы способны перевоплощаться 5 раз в продолжительный отдых.</p>
+        </div>
+    </div>
+    </details>
+
+
+
+    <details id="giveaways" style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Рефрактал
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+        <p class="ability-text"></p>
+    </div>
+    </details>
+
+
+
+    <details id="giveaways" style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            Инвертор
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+        <p class="ability-text"></p>
+    </div>
+    </details>
+
+    <details style="background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 6px; margin-bottom: 10px; overflow: hidden;">
+        <summary style="padding: 14px 18px; font-size: 18px; font-weight: 800; color: #1e293b; text-transform: uppercase; cursor: pointer;">
+            
+        </summary>
+        <div style="padding: 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); background: rgba(0, 0, 0, 0.01)">
+            <p class="ability-text">Описание второго архетипа...</p>
+            </div>
+        </details>
+             )}
+
+		</div>
+	</body>
+</html>
